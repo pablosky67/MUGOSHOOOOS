@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestro Mundo - Para mi vida ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #2c3e2d 0%, #4a3b2c 100%);
+            font-family: 'Courier New', Courier, monospace;
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            transition: background 0.5s ease;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            margin: 20px 0;
+            z-index: 2;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #ffcc00;
+            text-shadow: 2px 2px #d63384;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            padding: 0 10px;
+        }
+
+        /* Barra de navegación / Pestañas adaptables para celular */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+            z-index: 2;
+            width: 100%;
+            max-width: 750px;
+        }
+
+        .tab-btn {
+            background-color: #333;
+            color: #fff;
+            border: 2px solid #fff;
+            padding: 8px 14px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .tab-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.85;
+        }
+
+        /* Contenedor de las secciones */
+        .content-container {
+            max-width: 750px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+            z-index: 2;
+            margin-bottom: 30px;
+        }
+
+        .content-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* ESTILOS TEMÁTICOS POR PESTAÑA */
+
+        /* 0. Mugoshos: Café y Verde */
+        body.theme-mugoshos { background: linear-gradient(135deg, #2d4a22 0%, #5c3a21 100%); }
+        .content-container.theme-mugoshos {
+            background: rgba(45, 58, 34, 0.88);
+            border: 3px solid #a3b18a;
+        }
+        .theme-mugoshos .tab-btn.active {
+            background-color: #3a5a40;
+            color: #fff;
+            border-color: #dda15e;
+            box-shadow: 0 0 12px #dda15e;
+        }
+        .theme-mugoshos .section-title { color: #dda15e; text-shadow: 2px 2px #283618; }
+
+        /* 1. Pingüinitos: Blanco y negro */
+        body.theme-pinguinos { background: linear-gradient(135deg, #0f0f0f 0%, #434343 100%); }
+        .content-container.theme-pinguinos {
+            background: rgba(20, 20, 20, 0.88);
+            border: 3px solid #ffffff;
+        }
+        .theme-pinguinos .tab-btn.active {
+            background-color: #000;
+            color: #fff;
+            border-color: #ff3333;
+            box-shadow: 0 0 12px #ff3333;
+        }
+        .theme-pinguinos .section-title { color: #ffffff; text-shadow: 2px 2px #ff3333; }
+
+        /* 2. Calpinchos: Tonos cafecitos */
+        body.theme-calpinchos { background: linear-gradient(135deg, #3d2314 0%, #8c5830 100%); }
+        .content-container.theme-calpinchos {
+            background: rgba(61, 35, 20, 0.88);
+            border: 3px solid #d4a373;
+        }
+        .theme-calpinchos .tab-btn.active {
+            background-color: #8c5830;
+            color: #fff;
+            border-color: #faedcd;
+            box-shadow: 0 0 12px #d4a373;
+        }
+        .theme-calpinchos .section-title { color: #faedcd; text-shadow: 2px 2px #582f0e; }
+
+        /* 3. Tutuguitas: Verde fuerte y claro */
+        body.theme-tutuguitas { background: linear-gradient(135deg, #0f2b1d 0%, #2d6a4f 100%); }
+        .content-container.theme-tutuguitas {
+            background: rgba(15, 43, 29, 0.88);
+            border: 3px solid #52b788;
+        }
+        .theme-tutuguitas .tab-btn.active {
+            background-color: #2d6a4f;
+            color: #fff;
+            border-color: #b7e4c7;
+            box-shadow: 0 0 12px #52b788;
+        }
+        .theme-tutuguitas .section-title { color: #b7e4c7; text-shadow: 2px 2px #1b4332; }
+
+        /* 4. Sección Galaxia: Morado cósmico con estrellas */
+        body.theme-secreto { background: linear-gradient(135deg, #120428 0%, #3a0ca3 50%, #7209b7 100%); }
+        .content-container.theme-secreto {
+            background: rgba(26, 11, 46, 0.88);
+            border: 3px solid #f72585;
+            box-shadow: 0 0 20px rgba(247, 37, 133, 0.4);
+        }
+        .theme-secreto .tab-btn.active {
+            background-color: #7209b7;
+            color: #fff;
+            border-color: #4cc9f0;
+            box-shadow: 0 0 12px #f72585;
+        }
+        .theme-secreto .section-title { color: #4cc9f0; text-shadow: 2px 2px #f72585; }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        /* Contenedor adaptado para fotos en celular */
+        .photo-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 8px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .photo-container img {
+            width: 100%;
+            max-height: 280px;
+            border-radius: 6px;
+            object-fit: contain;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Textos explicativos responsivos */
+        .story-text {
+            font-size: 0.98rem;
+            line-height: 1.7;
+            color: #f1f5f9;
+            text-align: justify;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ffcc00;
+        }
+
+        /* Estilos para el cuadro de contraseña adaptable */
+        .password-box {
+            text-align: center;
+            padding: 15px 5px;
+        }
+
+        .password-box p {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            color: #ffcc00;
+        }
+
+        .password-box input {
+            width: 100%;
+            max-width: 250px;
+            padding: 10px;
+            font-size: 1rem;
+            border-radius: 10px;
+            border: 2px solid #f72585;
+            background: rgba(0,0,0,0.5);
+            color: #fff;
+            outline: none;
+            text-align: center;
+            margin-bottom: 10px;
+            font-family: inherit;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .password-box button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            background: #f72585;
+            color: #fff;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.3s;
+        }
+
+        .password-box button:hover {
+            background: #7209b7;
+        }
+
+        .error-msg {
+            color: #ff4d4d;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        /* Estrellas de fondo */
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite ease-in-out;
+            z-index: 1;
+        }
+
+        .shooting-star {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(-45deg, rgba(255,255,255,1), rgba(0,0,0,0));
+            border-radius: 999px;
+            filter: drop-shadow(0 0 4px #fff);
+            animation: tail 3s ease-in-out infinite, shooting 3s ease-in-out infinite;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes shooting {
+            0% { transform: translateX(0) translateY(0); opacity: 1; }
+            100% { transform: translateX(-300px) translateY(300px); opacity: 0; }
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            padding: 15px;
+            z-index: 2;
+        }
+
+        /* Ajustes extra para pantallas muy chicas de celular */
+        @media (max-width: 480px) {
+            h1 { font-size: 1.5rem; }
+            .tab-btn { font-size: 0.8rem; padding: 6px 10px; }
+            .content-container { padding: 15px; }
+            .story-text { font-size: 0.92rem; }
+        }
+    </style>
+</head>
+<body class="theme-mugoshos" id="page-body">
+
+    <!-- Fondo de estrellas generadas por script -->
+    <div id="stars-container"></div>
+
+    <header>
+        <h1>Nuestro Mundo, mi vida ❤️</h1>
+        <p class="subtitle">Explora cada pestaña para descubrir nuestros apodos</p>
+    </header>
+
+    <!-- Pestañas de navegación -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'mugoshos')">🤎 💚 Mugoshos</button>
+        <button class="tab-btn" onclick="openTab(event, 'pinguinos')">🐧 Pingüinitos</button>
+        <button class="tab-btn" onclick="openTab(event, 'calpinchos')">🐹 Calpinchos</button>
+        <button class="tab-btn" onclick="openTab(event, 'tutuguitas')">🐢 Tutuguitas</button>
+        <button class="tab-btn" onclick="openTab(event, 'secreto')">🌌 Galaxia</button>
+    </div>
+
+    <!-- SECCIÓN PRINCIPAL: MUGOSHOS -->
+    <div id="mugoshos" class="content-container theme-mugoshos active">
+        <h2 class="section-title">Nuestros Mugoshos</h2>
+        <div class="story-text">
+            <p>Hola, amorcito: te hago esta página para recordarte lo mucho que te amo, lo mucho que te adoro y lo muy importante que eres para mí. Eres el amor de mi vida, eres mi vida entera y eres mi todo. No quiero perderte nunca en la vida; siempre quiero que el verde de tus ojos combine con el café de los míos, que seamos siempre el bosque del cual te hablo, que siempre seamos tú y yo en las buenas y en las malas. Que siempre seamos mugoshos, que siempre seamos pingüinitos, que siempre seamos calpinchos, que siempre seamos tutuguitas, pero más importante, que siempre seamos tú y yo para siempre, mami. No quiero perderte jamás; eres lo más importante que tengo y quiero que seamos tú y yo por siempre, quiero que siempre seamos nosotros, quiero que siempre salgamos adelante y nada ni nadie nos pueda separar. Que siempre podamos salir adelante por más difícil que se pongan las cosas y jamás nos separemos, ¿sí, mamita? ¡Te amo y adoro muchísimo, mi mugoshosa!</p>
+        </div>
+        <div class="photo-container">
+            <img src="foto4.jpg" alt="Mugoshos juntos">
+        </div>
+    </div>
+
+    <!-- SECCIÓN 1: PINGÜINITOS -->
+    <div id="pinguinos" class="content-container theme-pinguinos">
+        <h2 class="section-title">Nuestros Pingüinitos</h2>
+        <div class="story-text">
+            <p><strong>Nuestro amor es como el de los pingüinitos:</strong> Dicen que los pingüinos eligen a una sola pareja para toda la vida y caminan juntos contra el frío más extremo. Así somos tú y yo, mi bebé. No importa qué tan fuerte sople el viento o qué tan difícil se ponga el día, nosotros siempre nos abrigamos con un abrazo, nos cuidamos las espaldas y sabemos que, sin importar el hielo o la tormenta, mi refugio seguro siempre es estar a tu lado, mami.</p>
+        </div>
+        <div class="photo-container">
+            <img src="foto1.jpg" alt="Pingüinitos de amor">
+        </div>
+    </div>
+
+    <!-- SECCIÓN 2: CALPINCHOS -->
+    <div id="calpinchos" class="content-container theme-calpinchos">
+        <h2 class="section-title">Nuestros Calpinchos</h2>
+        <div class="story-text">
+            <p><strong>Nuestro amor es como el de los calpinchos:</strong> Los capibaras son los animales más pacíficos, buena onda y relajados de todo el mundo, capaces de convivir en paz con quien sea y disfrutar plenamente de un buen baño tranquilos. Estar contigo, mi vida, me da esa misma paz mental y tranquilidad absoluta; mi mundo a veces es un caos allá afuera, pero cuando estoy contigo todo se calienta, se vuelve suave, risueño y sumamente armónico.</p>
+        </div>
+        <div class="photo-container">
+            <img src="foto2.jpg" alt="Calpinchos juntitos">
+        </div>
+    </div>
+
+    <!-- SECCIÓN 3: TUTUGUITAS -->
+    <div id="tutuguitas" class="content-container theme-tutuguitas">
+        <h2 class="section-title">Nuestras Tutuguitas</h2>
+        <div class="story-text">
+            <p><strong>Nuestro amor es como el de las tutuguitas:</strong> Las tortugas avanzan despacio, paso a paso, pero tienen una coraza durísima que las protege de todo y viven muchísimos años. Nuestro amor se construye así, mami: con paciencia, sin prisas, paso a pasito todos los días, pero con una base tan fuerte y sólida que es capaz de aguantar el paso del tiempo y durar toda la eternidad contigo, mi amor.</p>
+        </div>
+        <div class="photo-container">
+            <img src="foto3.jpg" alt="Tutuguitas de amor">
+        </div>
+    </div>
+
+    <!-- SECCIÓN 4: GALAXIA / SECRETA -->
+    <div id="secreto" class="content-container theme-secreto">
+        <h2 class="section-title">Galaxia Cósmica 🌌</h2>
+        
+        <!-- Pantalla de bloqueo con contraseña -->
+        <div id="lock-screen" class="password-box">
+            <p>Pista: <em>"cuando esta historia volvio a comenzar"</em></p>
+            <input type="password" id="pass-input" placeholder="Ingresa la contraseña">
+            <button onclick="checkPassword()">Entrar</button>
+            <div id="error-msg" class="error-msg">Contraseña incorrecta, prueba otra vez mi amor ❤️</div>
+        </div>
+
+        <!-- Contenido oculto -->
+        <div id="secret-content" style="display: none;">
+            <div class="story-text">
+                <p>Recuerda que tendremos a nuestros niños, mi vida. Esto es solo el comienzo de todo lo hermoso que nos espera construyendo nuestro futuro juntos.</p>
+            </div>
+            <div class="photo-container">
+                <img src="foto5.jpg" alt="Nuestros niños">
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Hecho con todo el corazón para ti ✨
+    </footer>
+
+    <!-- Script para pestañas, contraseña y generación de estrellas -->
+    <script>
+        function openTab(evt, tabName) {
+            let containers = document.getElementsByClassName("content-container");
+            for (let i = 0; i < containers.length; i++) {
+                containers[i].classList.remove("active");
+            }
+
+            let buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+
+            let body = document.getElementById("page-body");
+            body.className = "theme-" + tabName;
+        }
+
+        function checkPassword() {
+            let inputVal = document.getElementById("pass-input").value;
+            let errorMsg = document.getElementById("error-msg");
+            let lockScreen = document.getElementById("lock-screen");
+            let secretContent = document.getElementById("secret-content");
+
+            if (inputVal === "230426") {
+                lockScreen.style.display = "none";
+                secretContent.style.display = "block";
+            } else {
+                errorMsg.style.display = "block";
+            }
+        }
+
+        function createStars() {
+            const container = document.getElementById("stars-container");
+            const starCount = 50;
+            const shootingStarCount = 4;
+
+            for (let i = 0; i < starCount; i++) {
+                let star = document.createElement("div");
+                star.className = "star";
+                star.style.top = Math.random() * 100 + "vh";
+                star.style.left = Math.random() * 100 + "vw";
+                star.style.animationDuration = (Math.random() * 2 + 1) + "s";
+                star.style.animationDelay = (Math.random() * 2) + "s";
+                container.appendChild(star);
+            }
+
+            for (let i = 0; i < shootingStarCount; i++) {
+                let sStar = document.createElement("div");
+                sStar.className = "shooting-star";
+                sStar.style.top = (Math.random() * 50) + "vh";
+                sStar.style.left = (Math.random() * 100) + "vw";
+                sStar.style.width = (Math.random() * 60 + 40) + "px";
+                sStar.style.animationDelay = (Math.random() * 5) + "s";
+                sStar.style.animationDuration = (Math.random() * 3 + 2) + "s";
+                container.appendChild(sStar);
+            }
+        }
+
+        createStars();
+    </script>
+
+</body>
+</html>
